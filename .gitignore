@@ -1,10 +1,10 @@
 Temp/
 Library/
-SophieJump.Editor.csproj
-SophieJump.Plugins.csproj
-SophieJump.csproj
-SophieJump.sln
+Defensophie.Editor.csproj
+Defensophie.Plugins.csproj
+Defensophie.csproj
+Defensophie.sln
 Build/
-.vs/SophieJump/v14/.suo
-SophieJump.csproj.user
+.vs/Defensophie/v14/.suo
+Defensophie.csproj.user
 .vs/
