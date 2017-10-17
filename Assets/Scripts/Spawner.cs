@@ -8,25 +8,18 @@ public class Spawner : MonoBehaviour
     private GameObject monster;
     private List<GameObject> InstancedMonster = new List<GameObject>();
     // Use this for initialization
-    void Update ()
+    void Start ()
     {
         StartCoroutine ("Spawne");
     }
     IEnumerator Spawne ()
     {
-        StartCoroutine ("DoSomething");
-        yield return new WaitForSeconds (4f);
-        StopCoroutine ("DoSomething");
-    }
-    IEnumerator DoSomething ()
-    {
         while (true)
         {
-            GameObject newMonster =Instantiate (monster,monster.GetComponent<Monster>().startpos,Quaternion.identity);
+            GameObject newMonster = Instantiate (monster, monster.GetComponent<Monster> ().startpos, Quaternion.identity);
             InstancedMonster.Add (newMonster);
-            Debug.Log (InstancedMonster.Count);
-            yield return null;
+            yield return null; //wait for a frame
+            yield return new WaitForSeconds (3.14f);
         }
-
     }
 }

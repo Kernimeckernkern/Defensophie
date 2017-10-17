@@ -34,12 +34,12 @@ public class Monster : MonoBehaviour {
     }
     private void Die ()
     {
-        transform.position = startpos;
+        Destroy (gameObject);
     }
    public void SetHp (int damage)
     {
         monsterHp -= damage;
-        Debug.Log (monsterHp);
+        Debug.Log ("Monster hp"+monsterHp);
         if (monsterHp <= 0)
         {
             Die ();

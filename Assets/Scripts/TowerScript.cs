@@ -13,19 +13,21 @@ public class TowerScript : MonoBehaviour {
     private int damage = 2;
     // Use this for initialization
     void Start () {
-		
+        StartCoroutine ("Attack",regeneration);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (Vector3.Distance(transform.position,monster.transform.position) < range)
-        {
-            monster.GetComponent<Monster>().SetHp (damage);
-            StartCoroutine("Regeneration",regeneration);
-        }
-	}
-    private IEnumerator Regeneration(float regeneration)
+
+    // Update is called once per frame
+    /*MIt collider die monster aufnehmen um sie dann richtig zu attakieren mit on trigger enter und ontriggerexit*/
+    IEnumerator Attack (float regeneration)
     {
-        yield return new WaitForSeconds (regeneration);
+        while (true)
+        {
+
+            if (Vector3.Distance (transform.position, monster.transform.position) < range)
+            {
+                monster.GetComponent<Monster> ().SetHp (damage);
+                yield return new WaitForSeconds (regeneration);
+            }
+        }
     }
 }
