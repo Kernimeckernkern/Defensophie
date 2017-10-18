@@ -26,7 +26,8 @@ public class Spawner : MonoBehaviour
       
         while (Lebensmanager.Instance.PlayerAlive)
         {
-            newMonster = Instantiate (monster, startpos.position, Quaternion.identity);
+            newMonster = MonsterPool.Instance.GetFromPool();
+            newMonster.transform.position = startpos.position;
             Monster monsterInstance = newMonster.GetComponent<Monster> ();
             monsterInstance.Initialize (this, endpoint.position);
             monsterInstance.StartMoving (true);
@@ -54,7 +55,8 @@ public class Spawner : MonoBehaviour
     {
         for (int a = InstancedMonster.Count - 1; a >= 0; --a)
         {
-            Destroy (InstancedMonster[a]);
+            monster.GetComponent<Monster>().SetHp();
+            MonsterPool.Instance.AddToPool (InstancedMonster[a]);
         }
         InstancedMonster.Clear ();
     }

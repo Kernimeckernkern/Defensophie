@@ -71,7 +71,7 @@ public class Monster : MonoBehaviour
 
     }
 
-    public void SetHp (int damage)
+    public void DecreaseHp (int damage)
     {
         monsterHp -= damage;
         //Debug.Log ("Monster hp"+monsterHp);
