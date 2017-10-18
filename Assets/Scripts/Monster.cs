@@ -2,46 +2,93 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour {
-    [SerializeField]
-    private Transform endpoint;
+public class Monster : MonoBehaviour
+{
     [SerializeField]
     private float speed = 5f;
     [SerializeField]
     private int monsterHp = 10;
-    public Vector3 startpos;
+    [SerializeField]
+    private GameObject lebensMan;
+
+    public Vector3 movement;
+    public Vector3 dir;
+
+    private CharacterController controller;
+    private Material material;
+    private bool loslaufen;
+    private Spawner spawner;
+    private Vector3 endpoint;
+
     // Use this for initialization
-    void Start () {
-        startpos = transform.position;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        transform.position = Vector3.MoveTowards (transform.position,endpoint.position,speed * Time.deltaTime);
-        if (Mathf.Round (transform.position.x) >= endpoint.position.x)
+    void Start ()
+    {
+        controller = GetComponent<CharacterController> ();
+        material = GetComponent<MeshRenderer> ().material;
+    }
+
+    // Update is called once per frame
+    void Update ()
+    {
+        if (Lebensmanager.Instance.PlayerAlive)
         {
-            endpoint.GetComponent<Lebensmanager> ().SetPHp ();
+            if (loslaufen)
+            {
+                // find the target position relative to the player:
+                dir = endpoint - transform.position;
+                // calculate movement at the desired speed:
+                movement = dir.normalized * speed * Time.deltaTime;
+                // limit movement to never pass the target position:
+                if (movement.magnitude > dir.magnitude)
+                    movement = dir;
+                // move the character:
+                controller.Move (movement);
+            }
+
+        }
+    }
+    public void Initialize (Spawner spawner, Vector3 endposition)
+    {
+        this.spawner = spawner;
+        endpoint = endposition;
+    }
+    public void StartMoving (bool los)
+    {
+        loslaufen = los;
+    }
+
+    private IEnumerator Blink ()
+    {
+        material.color = Color.red;
+        yield return new WaitForSeconds (0.1f);
+        material.color = Color.grey;
+    }
+
+    private void Die ()
+    {
+        spawner.RemoveFromList (gameObject);
+        Destroy (gameObject);
+
+    }
+
+    public void SetHp (int damage)
+    {
+        monsterHp -= damage;
+        //Debug.Log ("Monster hp"+monsterHp);
+        if (monsterHp <= 0)
+        {
             Die ();
         }
-            
+        else
+        {
+            StartCoroutine (Blink ());
+        }
     }
     private void OnTriggerEnter (Collider other)
     {
-      /*  if (other.gameObject.layer == LayerMask.NameToLayer("DeathZone"))
+        if (other.gameObject.layer == LayerMask.NameToLayer ("DeathZone"))
         {
-            Die ();
-        }*/
-    }
-    private void Die ()
-    {
-        Destroy (gameObject);
-    }
-   public void SetHp (int damage)
-    {
-        monsterHp -= damage;
-        Debug.Log ("Monster hp"+monsterHp);
-        if (monsterHp <= 0)
-        {
+            Lebensmanager.Instance.DecreaseLife ();
             Die ();
         }
     }

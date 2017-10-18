@@ -6,20 +6,56 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField]
     private GameObject monster;
-    private List<GameObject> InstancedMonster = new List<GameObject>();
+    [SerializeField]
+    private Transform startpos;
+    [SerializeField]
+    private Transform endpoint;
+    [SerializeField]
+    private float spawnTime = 5f;
+    private GameObject newMonster;
+    private bool los;
+    private List<GameObject> InstancedMonster = new List<GameObject> ();
     // Use this for initialization
     void Start ()
     {
-        StartCoroutine ("Spawne");
+        BeginSpawn ();
     }
     IEnumerator Spawne ()
     {
-        while (true)
+        
+      
+        while (Lebensmanager.Instance.PlayerAlive)
         {
-            GameObject newMonster = Instantiate (monster, monster.GetComponent<Monster> ().startpos, Quaternion.identity);
+            newMonster = Instantiate (monster, startpos.position, Quaternion.identity);
+            Monster monsterInstance = newMonster.GetComponent<Monster> ();
+            monsterInstance.Initialize (this, endpoint.position);
+            monsterInstance.StartMoving (true);
             InstancedMonster.Add (newMonster);
-            yield return null; //wait for a frame
-            yield return new WaitForSeconds (3.14f);
+            yield return new WaitForSeconds (spawnTime);
         }
+        
+    }
+    public void RemoveFromList (GameObject deadMonster)
+    {
+        if (InstancedMonster.Contains (deadMonster))
+        {
+        InstancedMonster.Remove (deadMonster);
+        }
+    }
+    public void Reset ()
+    {
+        ListDestroyer ();
+    }
+    public void BeginSpawn ()
+    {
+        StartCoroutine (Spawne());
+    }
+    private void ListDestroyer ()
+    {
+        for (int a = InstancedMonster.Count - 1; a >= 0; --a)
+        {
+            Destroy (InstancedMonster[a]);
+        }
+        InstancedMonster.Clear ();
     }
 }

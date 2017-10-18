@@ -1,28 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Lebensmanager : MonoBehaviour {
+public class Lebensmanager : MonoBehaviour
+{
     [SerializeField]
     private int playerHp = 10;
-    
-    // Use this for initialization
-    void Start () {
+    [SerializeField]
+    private GameObject newStartCanvas;
+    private static Lebensmanager instance;
+    public bool PlayerAlive
+    {
+        get
+        {
+            return playerHp > 0;
+        }
 
     }
+    public static Lebensmanager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<Lebensmanager> ();
+            }
+            return instance;
+        }
 
-    // Update is called once per frame
-    void Update () {
-       
-
+        set
+        {
+            instance = value;
+        }
     }
-    public void SetPHp ()
+
+    public void DecreaseLife ()
     {
         playerHp -= 1;
-        Debug.Log ("PLaer hp"+playerHp);
-        if (playerHp <= 0)
+        Debug.Log ("PLaer hp" + playerHp);
+        if (!PlayerAlive)
         {
-            Debug.Log("Du bist tot");
+            ShowCanvas (true);
         }
+    }
+    public void SetLife (int hp)
+    {
+        playerHp = hp;
+    }
+    public void ShowCanvas (bool show)
+    {
+        newStartCanvas.SetActive (show);
     }
 }

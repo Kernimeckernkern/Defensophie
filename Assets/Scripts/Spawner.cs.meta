@@ -1,11 +1,13 @@
 fileFormatVersion: 2
 guid: b835b43ad0ab1bf4fa601614eab01211
-timeCreated: 1508235922
+timeCreated: 1508324978
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - monster: {fileID: 1437030043610606, guid: 4b1d6fd7c2fab474a903f6d989d007a4, type: 2}
+  - monster: {instanceID: 0}
+  - endpoint: {instanceID: 0}
+  - startpos: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
