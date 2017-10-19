@@ -10,11 +10,14 @@ public class TowerScript : MonoBehaviour
     private float range = 6f;
     [SerializeField]
     private int damage = 2;
+    private BoxCollider box;
     private Monster currentMonster;
     private Queue<GameObject> monsterIn = new Queue<GameObject> ();
     // Use this for initialization
     void Start ()
     {
+        box = GetComponent<BoxCollider>();
+        box.size = new Vector3(range*2f,3f,range*2f);
         BeginAttack ();
     }
 
@@ -37,7 +40,7 @@ public class TowerScript : MonoBehaviour
                 }
                 if (currentMonster != null)
                 {
-                    currentMonster.SetHp (damage);
+                    currentMonster.DecreaseHp (damage);
                 }
                 yield return new WaitForSeconds (regeneration);
             }
