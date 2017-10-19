@@ -14,16 +14,60 @@ public class TowerScript : MonoBehaviour
     [SerializeField]
     private int damage = 2;
 
-
+    private int startDam;
+    private float startReg, startRan;
     private BoxCollider box;
     private Monster currentMonster;
     private Queue<GameObject> monsterIn = new Queue<GameObject> ();
+
+    public float Regeneration
+    {
+        get
+        {
+            return regeneration;
+        }
+
+        private set
+        {
+            regeneration = value;
+        }
+    }
+
+    public float Range
+    {
+        get
+        {
+            return range;
+        }
+
+        private set
+        {
+            range = value;
+        }
+    }
+
+    public int Damage
+    {
+        get
+        {
+            return damage;
+        }
+
+       private set
+        {
+            damage = value;
+        }
+    }
+
     // Use this for initialization
     void Start ()
     {
         box = GetComponent<BoxCollider>();
         box.size = new Vector3(range*2f,3f,range*2f + 4f);
         BeginAttack ();
+        startDam = damage;
+        startReg = regeneration;
+        startRan = range;
     }
     IEnumerator Attack ()
     {
@@ -46,7 +90,7 @@ public class TowerScript : MonoBehaviour
                 {
                     currentMonster.DecreaseHp (damage);
                 }
-                yield return new WaitForSeconds (regeneration);
+                yield return new WaitForSeconds (Regeneration);
             }
             else
             {
@@ -75,12 +119,28 @@ public class TowerScript : MonoBehaviour
 
         }
     }
+    public void SetRange(float newRange)
+    {
+        range += newRange;
+        box.size = new Vector3(range * 2f, 3f, range * 2f + 4f);
+    }
+    public int SetDamage(int newDamage)
+    {
+        damage += newDamage;
+        return damage;
+    }
+    public float SetRegeneration(float newRegeneration)
+    {
+        regeneration -= newRegeneration;
+        return regeneration;
+    }
     public void BeginAttack ()
     {
         StartCoroutine (Attack());
     }
     public void Reset ()
     {
+        ResetTower();
         monsterIn.Clear ();
         currentMonster = null;
         gameObject.SetActive (false);
@@ -88,6 +148,12 @@ public class TowerScript : MonoBehaviour
         {
         button.transform.position -= new Vector3 (0f,130f,0f);
         }
+    }
+    public void ResetTower()
+    {
+        damage = startDam;
+        regeneration = startReg;
+        range = startRan;
     }
 
 

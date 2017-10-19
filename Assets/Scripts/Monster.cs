@@ -9,7 +9,7 @@ public class Monster : MonoBehaviour
     [SerializeField]
     private int monsterHp = 10;
     [SerializeField]
-    private GameObject lebensMan;
+    private Canvas slid;
 
     public Vector3 movement;
     public Vector3 dir;
@@ -25,6 +25,8 @@ public class Monster : MonoBehaviour
     {
         controller = GetComponent<CharacterController> ();
         material = GetComponent<MeshRenderer> ().material;
+       // Canvas newSlider = Instantiate(slid);
+        //slid.transform.SetParent(transform);
     }
 
     // Update is called once per frame

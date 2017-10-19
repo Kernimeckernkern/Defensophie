@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public class Lebensmanager : MonoBehaviour
 {
     [SerializeField]
     private int playerHp = 10;
     [SerializeField]
+    private Slider slider;
+    [SerializeField]
     private GameObject newStartCanvas;
+    private int maxHealth;
     private static Lebensmanager instance;
     public bool PlayerAlive
     {
@@ -32,7 +36,18 @@ public class Lebensmanager : MonoBehaviour
             instance = value;
         }
     }
-
+    private void Start()
+    {
+        maxHealth = playerHp;
+    }
+    private void Update()
+    {
+        slider.value = CurrentLife();
+        slider.GetComponentInChildren<Text>().text = playerHp.ToString() + "/" + maxHealth.ToString();
+    }
+    private float CurrentLife() {
+        return (float)playerHp / (float)maxHealth;
+    }
     public void DecreaseLife ()
     {
         playerHp -= 1;
