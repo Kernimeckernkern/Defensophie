@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class TowerScript : MonoBehaviour
 {
+
+    [SerializeField]
+    private GameObject button;
     [SerializeField]
     private float regeneration = 2f;
     [SerializeField]
     private float range = 6f;
     [SerializeField]
     private int damage = 2;
+
+
     private BoxCollider box;
     private Monster currentMonster;
     private Queue<GameObject> monsterIn = new Queue<GameObject> ();
@@ -17,10 +22,9 @@ public class TowerScript : MonoBehaviour
     void Start ()
     {
         box = GetComponent<BoxCollider>();
-        box.size = new Vector3(range*2f,3f,range*2f);
+        box.size = new Vector3(range*2f,3f,range*2f + 4f);
         BeginAttack ();
     }
-
     IEnumerator Attack ()
     {
         while (Lebensmanager.Instance.PlayerAlive)
@@ -79,7 +83,12 @@ public class TowerScript : MonoBehaviour
     {
         monsterIn.Clear ();
         currentMonster = null;
-        
+        gameObject.SetActive (false);
+        if (button.transform.position.y > 10)
+        {
+        button.transform.position -= new Vector3 (0f,130f,0f);
+        }
     }
+
 
 }

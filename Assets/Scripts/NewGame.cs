@@ -7,17 +7,19 @@ public class NewGame : MonoBehaviour {
     [SerializeField]
     private Spawner spawner;
     [SerializeField]
-    private TowerScript towerScript;
+    private TowerScript[] towerScript;
     private void Start ()
     {
         GetComponent<Button> ().onClick.AddListener(NewStart);
     }
     private void NewStart (){
         spawner.Reset ();
-        towerScript.Reset ();
+        for (int a = towerScript.Length - 1; a >= 0; --a)
+        {
+            towerScript[a].Reset ();
+        }
         Lebensmanager.Instance.SetLife (10);
         Lebensmanager.Instance.ShowCanvas (false);
-        towerScript.BeginAttack ();
         spawner.BeginSpawn ();
     }
 }

@@ -74,7 +74,7 @@ public class Monster : MonoBehaviour
     public void DecreaseHp (int damage)
     {
         monsterHp -= damage;
-        //Debug.Log ("Monster hp"+monsterHp);
+        Debug.Log ("Monster hp"+monsterHp);
         if (monsterHp <= 0)
         {
             Die ();
