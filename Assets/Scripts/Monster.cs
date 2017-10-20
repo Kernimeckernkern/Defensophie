@@ -20,6 +20,19 @@ public class Monster : MonoBehaviour
     private Spawner spawner;
     private Vector3 endpoint;
 
+    public int MonsterHp
+    {
+        get
+        {
+            return monsterHp;
+        }
+
+        set
+        {
+            monsterHp = value;
+        }
+    }
+
     // Use this for initialization
     void Start ()
     {
@@ -72,7 +85,14 @@ public class Monster : MonoBehaviour
         Destroy (gameObject);
 
     }
-
+    public void SetHp (int hp)
+    {
+        monsterHp += hp ;
+    }
+    public void SetSpeed ()
+    {
+        speed += 1f;
+    }
     public void DecreaseHp (int damage)
     {
         monsterHp -= damage;
@@ -94,4 +114,5 @@ public class Monster : MonoBehaviour
             Die ();
         }
     }
+
 }

@@ -14,8 +14,8 @@ public class TowerScript : MonoBehaviour
     [SerializeField]
     private int damage = 2;
 
-    private int startDam;
-    private float startReg, startRan;
+    private int startDam = 2;
+    private float startReg = 2, startRan = 6;
     private BoxCollider box;
     private Monster currentMonster;
     private Queue<GameObject> monsterIn = new Queue<GameObject> ();

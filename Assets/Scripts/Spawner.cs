@@ -13,13 +13,26 @@ public class Spawner : MonoBehaviour
     private Transform endpoint;
     [SerializeField]
     private float spawnTime = 5f;
+    private Monster monsterScript;
     private GameObject newMonster;
+    private int monsterCount;
     private bool los;
     private List<GameObject> InstancedMonster = new List<GameObject> ();
     // Use this for initialization
     void Start ()
     {
+        monsterScript = monster.GetComponent<Monster> ();
+        monsterScript.MonsterHp = 10;
         BeginSpawn ();
+        BeginSpawnTime ();
+    }
+    private IEnumerator SpawnTime ()
+    {
+        while (Lebensmanager.Instance.PlayerAlive)
+        {
+        DecreaseSpawnTime ();
+        yield return new WaitForSeconds (30);
+        }
     }
     IEnumerator Spawne ()
     {
@@ -27,11 +40,16 @@ public class Spawner : MonoBehaviour
       
         while (Lebensmanager.Instance.PlayerAlive)
         {
+            if (monsterCount % 5==0)
+            {
+                monsterScript.SetHp (5);
+            }
             newMonster = Instantiate(monster,startpos.position,Quaternion.identity);
             Monster monsterInstance = newMonster.GetComponent<Monster> ();
             monsterInstance.Initialize (this, endpoint.position);
             monsterInstance.StartMoving (true);
             InstancedMonster.Add (newMonster);
+            monsterCount += 1;
             yield return new WaitForSeconds (spawnTime);
         }
         
@@ -43,13 +61,26 @@ public class Spawner : MonoBehaviour
         InstancedMonster.Remove (deadMonster);
         }
     }
-    public void Reset ()
+    private void DecreaseSpawnTime ()
     {
+        if(spawnTime > 0.2f)
+        spawnTime -= 0.2f;
+    }
+    public void Reset ()
+
+    {
+        monsterScript.MonsterHp = 10;
+        monsterCount = 0;
+        spawnTime = 5f;
         ListDestroyer ();
     }
     public void BeginSpawn ()
     {
         StartCoroutine (Spawne());
+    }
+    public void BeginSpawnTime ()
+    {
+        StartCoroutine (SpawnTime ());
     }
     private void ListDestroyer ()
     {

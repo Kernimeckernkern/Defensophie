@@ -14,6 +14,7 @@ public class NewGame : MonoBehaviour {
     }
     private void NewStart (){
         spawner.Reset ();
+        Lebensmanager.Instance.ResetMoney ();
         for (int a = towerScript.Length - 1; a >= 0; --a)
         {
             towerScript[a].Reset ();
@@ -21,5 +22,7 @@ public class NewGame : MonoBehaviour {
         Lebensmanager.Instance.SetLife (10);
         Lebensmanager.Instance.ShowCanvas (false);
         spawner.BeginSpawn ();
+        spawner.BeginSpawnTime ();
+    Lebensmanager.Instance.BeginClaimCoins ();
     }
 }
