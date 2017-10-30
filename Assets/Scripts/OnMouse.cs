@@ -11,6 +11,7 @@ public class OnMouse : MonoBehaviour {
     [SerializeField]
     private TowerScript script;
     private int i = 0;
+    private int a = 0;
     bool eMode;
 #if UNITY_EDITOR
     void OnMouseDown ()
@@ -27,7 +28,7 @@ public class OnMouse : MonoBehaviour {
         }
     }
 #endif
-#if UNITY_ANDROID
+/*#if UNITY_ANDROID
         void OnTouch()
 
     {
@@ -42,7 +43,8 @@ public class OnMouse : MonoBehaviour {
             i -= 1;
         }
     }
-#endif
+#endif*/
+#if UNITY_EDITOR
     private void OnMouseEnter()
     {
         inspect.SetActive(true);
@@ -52,4 +54,51 @@ public class OnMouse : MonoBehaviour {
     {
         inspect.SetActive(false);
     }
+#endif
+#if UNITY_ANDROID
+    void Update()
+    {
+       
+        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            Vector2 tPos = Input.GetTouch(0).position;
+            Ray ray = Camera.main.ScreenPointToRay(tPos);
+            RaycastHit hit;
+            if(Physics.Raycast(ray.origin,ray.direction,out hit))
+            {
+                if (hit.transform.position == gameObject.GetComponentInParent<Transform>().position)
+                {
+                    if(updates.activeSelf == false)
+                    { 
+                    updates.SetActive(true);
+                        a = 1;
+                    }
+                    if (a == 0 && updates.activeSelf == true )
+                    {
+                        updates.SetActive(false);
+                    }
+                }
+            }
+        }
+        a = 0;
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary)
+        {
+            Vector2 tPos = Input.GetTouch(0).position;
+            Ray ray = Camera.main.ScreenPointToRay(tPos);
+            RaycastHit hit;
+            if (Physics.Raycast(ray.origin, ray.direction, out hit))
+            {
+                if (hit.transform.position == gameObject.GetComponentInParent<Transform>().position)
+                {
+                    inspect.SetActive(true);
+                    inspect.GetComponent<Text>().text = "Damage: " + script.Damage.ToString() + "\nRegeneration Time: " + script.Regeneration.ToString() + "\nRange: " + script.Range.ToString();
+                }
+            }
+        }
+        else
+        {
+            inspect.SetActive(false);
+        }
+    }
+#endif
 }

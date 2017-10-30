@@ -22,7 +22,7 @@ public class Spawner : MonoBehaviour
     void Start ()
     {
         monsterScript = monster.GetComponent<Monster> ();
-        monsterScript.MonsterHp = 10;
+        monsterScript.MonsterHp = 5;
         BeginSpawn ();
         BeginSpawnTime ();
     }
@@ -69,7 +69,7 @@ public class Spawner : MonoBehaviour
     public void Reset ()
 
     {
-        monsterScript.MonsterHp = 10;
+        monsterScript.MonsterHp = 5;
         monsterCount = 0;
         spawnTime = 5f;
         ListDestroyer ();

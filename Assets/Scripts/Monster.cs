@@ -7,7 +7,7 @@ public class Monster : MonoBehaviour
     [SerializeField]
     private float speed = 5f;
     [SerializeField]
-    private int monsterHp = 10;
+    private int monsterHp = 5;
     [SerializeField]
     private Canvas slid;
 

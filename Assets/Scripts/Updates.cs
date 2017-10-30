@@ -34,12 +34,12 @@ public class Updates : MonoBehaviour {
     }
     public void DecreaseRegeneration()
     {
-        if (Lebensmanager.Instance.Coins >= 10)
+        if (Lebensmanager.Instance.Coins >= 20)
         {
             if (script.Regeneration > 0.5f)
             {
                 script.SetRegeneration (0.5f);
-                Lebensmanager.Instance.SetCoins (-10);
+                Lebensmanager.Instance.SetCoins (-20);
             }
             else
             {
